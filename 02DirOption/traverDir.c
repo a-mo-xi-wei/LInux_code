@@ -10,6 +10,7 @@
 #include<unistd.h>
 #include<string.h>
 #include<pthread.h>
+//#include<features.h>
 #include<dirent.h>
 #include<sys/stat.h>
 #include<sys/types.h>
@@ -19,19 +20,41 @@ void syserr(char* str){
 	perror(err);
 	exit(1);
 }
+void removeTrailingSlash(char* path) {
+    size_t length = strlen(path);  // 获取字符串长度
 
-void traverse(const char* path){
+    // 检查最后一个字符是否是 '/'，并确保字符串非空
+    if (length > 0 && path[length - 1] == '/') {
+        path[length - 1] = '\0';  // 将最后一个字符设置为字符串结束符 '\0'
+    }
+}
+void traverse(char* path){
+    char fileName[128];
+
+    removeTrailingSlash(path);    
     DIR* pDir = opendir(path);
     if(pDir == NULL)syserr(path);
     printf("打开目录成功\n");
-    int num = 0;
-    while(1){
-        struct dirent* pEntry = readdir(pDir);
-        if(pEntry == NULL)break;
-        if(strcmp(pEntry->d_name,".") == 0 || strcmp(pEntry->d_name,"..") == 0) continue;
-        printf("这是 %s 里第 %d 个文件 ：%s\n",path, ++num , pEntry->d_name);
 
+    int num = 0;
+    struct dirent* pEntry = NULL;
+    while(1){
+        pEntry = readdir(pDir);
+        if(pEntry == NULL)break;
+        if(pEntry->d_name[0] == '.' || strcmp(pEntry->d_name,"..") == 0) continue;
+        //printf("path : %s\n",path);
+        //printf("d_name : %s\n",pEntry->d_name);
+        sprintf(fileName,"%s/%s",path,pEntry->d_name);
+        //printf("fileName : %s\n",fileName);
+        if(pEntry->d_type == DT_DIR){
+            printf("目录 : %d : %s\n",num + 1 ,fileName);
+            traverse(fileName);
+        }else{
+            printf("文件 : %d : %s\n",num + 1 ,fileName);
+        }
+        num++;
     }
+    printf("遍历完毕\n");
     closedir(pDir);
 }
 
