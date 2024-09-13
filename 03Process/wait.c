@@ -17,7 +17,7 @@ int main(int argc ,char* argv[]) {
         pid_t r = wait(&sts);
         printf("父进程结束 : %d %d \n",r,sts);
     }else {         //子进程的fork返回0
-        for(int i=0;i<5;i++) {
+        for(int i=0;i<8;i++) {
             printf("-------我是子进程:%d %d %d\n",n+=3,getpid(),getppid());
             sleep(1);
         }
