@@ -4,4 +4,4 @@ project(03process C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(03process wait.c)
+add_executable(03process daemon.c)
