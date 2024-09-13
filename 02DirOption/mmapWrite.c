@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         fd = open("stu.data", O_RDWR | O_CREAT, 0666);
         if (-1 == fd)
         {
-            printf("创建%s都失败了 失败原因:%m,不玩了\n", "stu.data");
+            printf("创建%s都失败了 失败原因:%m\n", "stu.data");
             exit(-1);
         }
         printf("创建文件成功!\n");
