@@ -33,7 +33,7 @@ int main(int argc,char* argv[]){
             r = read(fds[0],buf,255);
             if(r){
                 buf[r] = '\0';
-                printf(" %d : %s\n",n,buf);
+                printf(" %d : %s\n",++n,buf);
                 if(strcmp(buf,"123456") == 0)break;
             }
         }
