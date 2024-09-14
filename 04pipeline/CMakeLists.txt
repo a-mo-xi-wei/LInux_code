@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(03process C)
+project(04pipeline C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(03process daemon.c)
+add_executable(04pipeline pipe.c)
