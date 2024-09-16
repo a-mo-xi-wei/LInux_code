@@ -26,7 +26,7 @@ int main(int argc,char* argv[]){
         syserr("open failed ...\n");
     }
     printf("open fifo successed\n");
-    //3.读
+    //3.写
     char buf[256];
     int n = 0;
     while(1){
