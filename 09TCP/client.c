@@ -49,10 +49,9 @@ int main(){
 		scanf("%s",buff);
 		r = send(fd,buff,strlen(buff),0);
 		printf("发送%d字节数据到服务器!\n",r);
-
 		r = recv(fd,temp,1023,0);
 		if(r>0){
-			temp[r] = 0;
+			temp[r] = '\0';
 			printf("服务器回复:%s\n",temp);
 		}
 	}

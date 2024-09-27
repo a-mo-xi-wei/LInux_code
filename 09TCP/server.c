@@ -21,7 +21,7 @@ void hand(int s){
 		//7 断开连接
 		close(clientFd);
 		close(serverFd);
-		printf("bye bye 了您呢!\n");
+		printf("bye bye 了勾八!\n");
 		exit(1);
 	}
 }
@@ -38,11 +38,11 @@ int main(){
 	addr.sin_addr.s_addr = inet_addr("127.0.0.1");//ip地址 注意字符串转网络字节序
 	addr.sin_port = htons(8888);//端口号 用1W左右的  大小端转换
 	//3 绑定
-	int r = bind(serverFd,(struct sockaddr*)&addr,sizeof addr);
+	int r = bind(serverFd,(struct sockaddr*)&addr,sizeof addr); 
 	if(-1 == r) printf("绑定失败:%m!\n"),close(serverFd),exit(-1);
 	printf("绑定成功!\n");
 	//4 监听
-	r = listen(serverFd,100);
+	r = listen(serverFd,100);//最大容量为100
 	if(-1 == r) printf("监听失败:%m!\n"),close(serverFd),exit(-1);
 	printf("监听成功!\n");
 	//5 接受客户端连接
@@ -50,8 +50,7 @@ int main(){
 	int len = sizeof cAddr;
 	clientFd = accept(serverFd,(struct sockaddr*)&cAddr,&len);
 	if(-1 == clientFd) printf("服务器崩溃:%m\n"),close(serverFd),exit(-1);
-	printf("接受客户端连接成功:%d %s %u\n",clientFd,
-		inet_ntoa(cAddr.sin_addr),cAddr.sin_port);
+	printf("接受客户端连接成功:%d %s %u\n",clientFd,inet_ntoa(cAddr.sin_addr),cAddr.sin_port);
 	//6 通信
 	char buff[1024];
 	int n=0;
@@ -59,7 +58,7 @@ int main(){
 	while(1){
 		r = recv(clientFd,buff,1023,0);
 		if(r > 0) {
-			buff[r] = 0;//添加字符串结束符号 '\0'
+			buff[r] = '\0';//添加字符串结束符号 '\0'
 			printf("%d:%s\n",r,buff);
 			sprintf(temp,"%d-%s",n++,buff);
 			send(clientFd,temp,strlen(temp),0);
