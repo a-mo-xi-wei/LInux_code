@@ -12,20 +12,33 @@
 #include<pthread.h>
 #include<fcntl.h>
 #include<signal.h>
+#include<sys/types.h>
+#include<sys/time.h>
 
 void syserr(char* str){
 	perror(str);
 	exit(1);
 }
 void handler(int signum){
-    printf("接收到信号%d\n",signum);
+    switch(signum){
+        case SIGALRM:
+            printf("收到定时器信号:%d\n",signum);
+            break;
+    }
 }
 int main(int argc,char* argv[]){
-	signal(2,handler);
-    int n = 0;
+	signal(SIGALRM,handler);
+    struct itimerval tv = {0};
+    tv.it_value.tv_sec = 2;
+    setitimer(ITIMER_REAL,&tv,NULL);
+    int n =0 ;
     while(1){
-        printf("n:%d\n",n++);
+        printf("正常运----%d %d\n",n++,getpid());
         sleep(1);
+        if(n%3==0)raise(SIGALRM);
     }
-	return 0;
+
+    return 0;
 }
+
+    
