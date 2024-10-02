@@ -41,13 +41,45 @@ int main(){
 	if(-1 == r) printf("连接服务器失败:%m!\n"),exit(-1);
 	printf("连接服务器成功!\n");
 
+#if 0
 	//4 通信
 	char buff[1024];
 	while(1){
 		printf("请输入要发送给服务器的数据:");
-		scanf("%s",buff);
+		scanf("%s",buff);//阻塞
 		r = send(fd,buff,strlen(buff),0);
 		printf("发送%d字节数据到服务器!\n",r);
+
+		r = recv(fd,buff,1023,0);
+		if(r>0){
+            buff[r] = '\0';
+            printf("服务器回复:%s\n",buff);
+        }
 	}
+#else
+	if(fork()){
+		char buff[1024];
+        while(1){
+            printf("请输入要发送给服务器的数据:");
+            scanf("%s",buff);
+            r = send(fd,buff,strlen(buff),0);
+            printf("发送%d字节数据到服务器!\n",r);
+
+            
+        }
+	}
+	else {
+		char buff[1024];
+		while(1){
+			r = recv(fd,buff,1023,0);
+            if(r>0){
+                buff[r] = '\0';
+                printf("服务器回复:%s\n",buff);
+            }
+		}
+	}
+
+#endif
+
 }
 

@@ -67,6 +67,7 @@ void* thread_func(void* a){
 	char buff[1024];
 	int idx = (int)a;
 	int r = 0;
+	char temp[1024];
 	while (1)
 	{
 		r = recv(clientFd[idx], buff, 1023, 0);
@@ -74,6 +75,14 @@ void* thread_func(void* a){
 		{
 			buff[r] = '\0'; // 添加字符串结束符号 '\0'
 			printf("%d:%s\n", idx, buff);
+			//转发
+			memset(temp,0,1024);
+			sprintf(temp,"%d>>%s",clientFd[idx],buff);
+			for(int j=0;j<MAXNUM;j++){
+				if(clientFd[j]!= -1 ){
+                    send(clientFd[j],temp,strlen(temp),0);
+                }
+            }
 		}
 	}
 }

@@ -36,7 +36,7 @@ int main(){
 	struct sockaddr_in addr={0};
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = inet_addr("127.0.0.1");//ip地址 注意字符串转网络字节序
-	addr.sin_port = htons(8888);//端口号 用1W左右的  大小端转换
+	addr.sin_port = htons(8888);//端口号 用1W左右的  
 	//3 绑定
 	int r = bind(serverFd,(struct sockaddr*)&addr,sizeof addr); 
 	if(-1 == r) printf("绑定失败:%m!\n"),close(serverFd),exit(-1);
